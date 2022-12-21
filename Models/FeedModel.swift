@@ -8,7 +8,7 @@
 import Foundation
 
 class FeedModel {
-    var secretWord: String = "Word"
+    var secretWord: String = "W"
     
     func check(word: String) -> Bool {
          word == secretWord

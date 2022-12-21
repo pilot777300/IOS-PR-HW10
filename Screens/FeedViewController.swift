@@ -11,6 +11,8 @@ class FeedViewController: UIViewController {
 
     var coordinator: FeedCoordinator?
     
+    var blinkStatus = false
+    
     private lazy var checkGuessButton: CustomButton = {
         let button = CustomButton(buttonTitle: "ПРОВЕРИТЬ", buttonColor: .systemBlue) { [unowned self]  in
            buttonAction()
@@ -68,22 +70,44 @@ class FeedViewController: UIViewController {
         self.view.addSubview(textfield)
         self.view.addSubview(guessColor)
         setConstraints()
-        }
+            }
             
          private func buttonAction() {
              
                 let feedModel = FeedModel()
                 if textfield.text != nil && textfield.text == feedModel.secretWord  {
+                   
                     guessColor.backgroundColor = .green//custom.buttonColor
                     guessColor.text = "YES!!!!"
                     guessColor.textColor = .black
+                    
                 } else {
-                    guessColor.backgroundColor = .red
-                        guessColor.text = "ОШИБКА"
+                    let timer = Timer.scheduledTimer(timeInterval: 0.5,
+                                                     target: self,
+                                                     selector: #selector(startTimer),
+                                                     userInfo: nil,
+                                                     repeats: true)
+                    timer.fire()
+                    startTimer()
+                    guessColor.text = "ОШИБКА"
                     guessColor.textColor = .black
+                    
                     }
                 }
+    
+        @objc func startTimer() {
+     
+            if blinkStatus == false {
+                guessColor.backgroundColor = .red
+                blinkStatus = true
+                
+            } else {
+                    guessColor.backgroundColor = .systemGray5
+                    blinkStatus = false
+                }
             }
+        }
+            
 
     
     
